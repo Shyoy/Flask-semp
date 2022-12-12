@@ -107,3 +107,4 @@ startbootstrap-sb-admin-2-gh-pages.zip
 startbootstrap-small-business-gh-pages.zip
 *.pyc
 
+*.code-workspace
