@@ -20,7 +20,6 @@ function App() {
   }
 
   const remove = async(id) => {
-
     const response = await axios.delete(MY_SERVER+id)
     console.log(response.data)
     loadData()
@@ -38,18 +37,19 @@ function App() {
       console.log('You need a title')
     }
   }
-  const handleCheckbox = async(i)=>{
-    const editTodo = todos[i]
+  const handleCheckbox = async(id)=>{
+    const editTodo = todos.find(todo => todo.id === +id);
     let done = (false === editTodo.done)
-    const response = await axios.put(MY_SERVER + editTodo.id, {done})
+    await axios.put(MY_SERVER + editTodo.id, {done})
     loadData()
   }
 
-  const edit = (i) => {
+  const edit = (id) => {
     setUpdateButton(true)
-    setTitle(todos[i].title)
-    setDesc(todos[i].desc)
-    setTodoEdit(todos[i])
+    const editTodo = todos.find(todo => todo.id === +id);
+    setTitle(editTodo.title)
+    setDesc(editTodo.desc)
+    setTodoEdit(editTodo)
     }
 
   const close =() => {
@@ -65,7 +65,6 @@ function App() {
       setDesc('')
       loadData()
       setUpdateButton(false)
-      console.log(response.data)
       return response.data
     }
     else{
@@ -139,7 +138,7 @@ function App() {
                     <ul className="list-group mb-0" id='list5'>
                       {todos.filter(todo => tabManager(todo.done)).map((todo, i) =>
                         <li key={i} className="list-group-item d-flex align-items-center border-0 mb-2 rounded">
-                          <input className="form-check-input me-2" type="checkbox"  checked={todo.done} value={i} onChange={(e)=> {handleCheckbox(e.target.value)}} aria-label="..." />
+                          <input className="form-check-input me-2" type="checkbox"  checked={todo.done} value={todo.id} onChange={(e)=> {handleCheckbox(e.target.value)}} aria-label="..." />
                           <div className="p-2 me-5">
                           <span className="text-capitalize" style={todo.done ? {textDecorationLine: 'line-through'}:{}}>{todo.title}</span>
                           </div>
@@ -151,7 +150,7 @@ function App() {
                           {new Date(todo.date_added).toLocaleDateString()} </span>
                           </div>
                           <div className="p-2 flex-xll-fill">
-                          <button type="button" onClick={() => edit(i)} className="btn">
+                          <button type="button" onClick={() => edit(todo.id)} className="btn">
                             <i className="text-info bi bi-pencil-square"/>
                             </button>
 
@@ -192,7 +191,7 @@ function App() {
                           
                             </div>
                           <div className="p-2 flex-xll-fill">
-                          <button type="button" onClick={() => remove(todo.id)} className="btn">
+                          <button type="button" onClick={() => window.confirm(`Are you sure you want to delete "${todo.title}" task ?`) && remove(todo.id)} className="btn">
                             <i className="text-danger bi bi-trash"/>
                             </button>
                             </div>
