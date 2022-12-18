@@ -91,12 +91,12 @@ function App() {
     },[]);
   
   return (
-    <section className="vh-100 gradient-custom">
+    <section className="vh-100">
       <div className="container py-5 h-100">
         <div className="row d-flex justify-content-center align-items-center h-100">
-          <div className="col col-xl-10">
+          <div className="col col-xl-10 ">
 
-            <div className="card">
+            <div className="card ">
               <div className="card-body p-4">
                 {/* add task */}
                 <form className=" mb-4">
@@ -116,7 +116,7 @@ function App() {
                 </form>
 
                 {/* <!-- Tabs navs --> */}
-                <ul className="nav nav-tabs mb-4 pb-2" id="ex1" role="tablist">
+                <ul className="nav nav-tabs mb-4 pb-2 " id="ex1" role="tablist">
                   <li className="nav-item" role="presentation">
                     <button className={tab===1 ?"nav-link active":"nav-link"} id="ex1-tab-1" data-mdb-toggle="tab"  role="tab"
                       aria-controls="ex1-tabs-1" aria-selected={tab===1} onClick={() => setTab(1)}>All</button>
@@ -136,9 +136,10 @@ function App() {
                 <div className="tab-content" id="ex1-content">
                   <div className="tab-pane fade show active" id="ex1-tabs-1" role="tabpanel"
                     aria-labelledby="ex1-tab-1">
+                    <div className='scroll'>
                     <ul className="list-group mb-0" id='list5'>
                       {todos.filter(todo => tabManager(todo.done)).map((todo, i) =>
-                        <li key={i} className="list-group-item d-flex align-items-center border-0 mb-2 rounded">
+                        <li key={i} className="scroll list-group-item d-flex align-items-center border-0 mb-2 rounded">
                           <input className="form-check-input me-2" type="checkbox"  checked={todo.done} value={todo.id} onChange={(e)=> {handleCheckbox(e.target.value)}} aria-label="..." />
                           <div className="p-2 me-5">
                           <span className="text-capitalize" style={todo.done ? {textDecorationLine: 'line-through'}:{}}>{todo.title}</span>
@@ -216,6 +217,7 @@ function App() {
                         Vestibulum at eros
                       </li> */}
                     </ul>
+                    </div>
                   </div>
                 </div>
                 {/* <!-- Tabs content --> */}
