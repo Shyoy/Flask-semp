@@ -3,7 +3,8 @@ import axios from 'axios';
 // import Update from './Components/Update.js';
 import './App.css'
 function App() {
-  const MY_SERVER = 'http://localhost:5000/todos/'
+  // const MY_SERVER = 'http://localhost:5000/todos/'
+  const MY_SERVER = 'https://shay-poc-flask.onrender.com/todos/'
   const [todos, setTodos] = useState([]);
   const [tab, setTab] = useState(1);
   const [todoEdit, setTodoEdit] = useState(Object);
