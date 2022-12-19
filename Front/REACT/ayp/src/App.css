@@ -1,10 +1,16 @@
 #list5 > *{
     background-color: #ebebeb65;
-    /* max-height: 50px; */
+    max-height: 50px;
+    overflow-y: hidden;
+}
+.App > *>*> #list5{
+    height: 250px;
 }
 
 
-.gradient-custom {
+
+
+/* .gradient-custom {
     background: radial-gradient(50% 123.47% at 50% 50%, #00ff94 0%, #720059 100%),
       linear-gradient(121.28deg, #669600 0%, #ff0000 100%),
       linear-gradient(360deg, #0029ff 0%, #8fff00 100%),
@@ -13,10 +19,10 @@
     background-blend-mode: screen, color-dodge, overlay, difference, normal;
     background-repeat: no-repeat;
     background-size: cover;
-}
+} */
 
 .scroll {
-    max-height: 250px;
+    max-height: 400px;
     overflow-y: auto;
     
 }

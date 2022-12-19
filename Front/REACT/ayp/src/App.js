@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios'; 
 // import Update from './Components/Update.js';
 import './App.css'
+import Loading from './Components/SharedArea/Loading/Loading.js';
 function App() {
   // const MY_SERVER = 'http://localhost:5000/todos/'
   const MY_SERVER = 'https://shay-poc-flask.onrender.com/todos/'
@@ -87,12 +88,17 @@ function App() {
   }
 
   useEffect(() => {
-      loadData()
+      setTimeout(() => {
+        loadData()
+        console.log("Delayed for 800ms second.");
+      }, "800")
+      
+      
     },[]);
   
   return (
-    <section className="vh-100">
-      <div className="container py-5 h-100">
+    
+      <div className="container py-5 h-100 mt-5">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col col-xl-10 ">
 
@@ -100,7 +106,9 @@ function App() {
               <div className="card-body p-4">
                 {/* add task */}
                 <form className=" mb-4">
+                  
                     <label className="form-label" htmlFor="form2">New task...</label>
+                  
                   <div className="form-outline flex-fill d-flex bd-highlight">
                     <div className="p-2 flex-xll-fill bd-highlight">
                     <input type="text" id="form2" required placeholder='Title' value={title} onChange={(e) => setTitle(e.target.value)} className="form-control" />
@@ -115,7 +123,8 @@ function App() {
                   </div>
                 </form>
 
-                {/* <!-- Tabs navs --> */}
+                {/* <!-- Tabs navs --> */} 
+
                 <ul className="nav nav-tabs mb-4 pb-2 " id="ex1" role="tablist">
                   <li className="nav-item" role="presentation">
                     <button className={tab===1 ?"nav-link active":"nav-link"} id="ex1-tab-1" data-mdb-toggle="tab"  role="tab"
@@ -128,18 +137,20 @@ function App() {
                   <li className="nav-item" role="presentation">
                     <button className={tab===3 ?"nav-link active":"nav-link"} id="ex1-tab-3" data-mdb-toggle="tab"  role="tab"
                       aria-controls="ex1-tabs-3" aria-selected={tab===3} onClick={() => setTab(3)}>Completed</button>
-                  </li>
+                      </li>
                 </ul>
                 {/* <!-- Tabs navs --> */}
 
                 {/* <!-- Tabs content --> */}
+
                 <div className="tab-content" id="ex1-content">
                   <div className="tab-pane fade show active" id="ex1-tabs-1" role="tabpanel"
                     aria-labelledby="ex1-tab-1">
                     <div className='scroll'>
-                    <ul className="list-group mb-0" id='list5'>
+                    {todos.length === 0 && <Loading/>}
+                    <ul className="list-group mb-0 " id='list5'>
                       {todos.filter(todo => tabManager(todo.done)).map((todo, i) =>
-                        <li key={i} className="scroll list-group-item d-flex align-items-center border-0 mb-2 rounded">
+                        <li key={i} className="rounded-2 scroll list-group-item d-flex align-items-center border-0 mb-2 rounded">
                           <input className="form-check-input me-2" type="checkbox"  checked={todo.done} value={todo.id} onChange={(e)=> {handleCheckbox(e.target.value)}} aria-label="..." />
                           <div className="p-2 me-5">
                           <span className="text-capitalize" style={todo.done ? {textDecorationLine: 'line-through'}:{}}>{todo.title}</span>
@@ -223,13 +234,15 @@ function App() {
                 {/* <!-- Tabs content --> */}
 
               </div>
+            
             </div>
 
           </div>
         </div>
       </div>
-    </section>
+     
   );
 }
+
 
 export default App;
