@@ -9,7 +9,7 @@
       name="description"
       content="Web site created using create-react-app"
     />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <!-- <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" /> -->
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -32,20 +32,20 @@
     -->
     <title>Todo App</title>
     <style>
-      .svgLoader {
-        /* animation: spin 10s linear infinite; */
+      /* .svgLoader {
+        animation: spin 10s linear infinite;
         animation: spin 10s linear infinite;;
         margin: auto;
-      }
+      } */
       .divLoader {
         width: 100vw;
         height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
-        animation: bigger 0.5s ease-in;
+        /* animation: bigger 0.5s ease-in; */
       }
-      @keyframes spin {
+      /* @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
       }
@@ -53,7 +53,7 @@
       @keyframes bigger {
         0% { transform: scale(0.1); }
         100% { transform: scale(1); }
-      }
+      } */
 
       body {
         height: 100%;
@@ -68,20 +68,55 @@
             background-blend-mode: screen, color-dodge, overlay, difference, normal, cover;
       }
 
+      .spinner {
+       position: absolute;
+       left: 50%;
+       top: 50%;
+       height:100px;
+       width:100px;
+       margin:0px auto;
+       -webkit-animation: rotation 1s infinite linear;
+       -moz-animation: rotation 1s infinite linear;
+       -o-animation: rotation 1s infinite linear;
+       animation: rotation 1s infinite linear;
+       border-left:10px solid rgba(54, 183, 230, .25);
+       border-right:10px solid rgba(54, 183, 230, .25);
+       border-bottom:10px solid rgba(54, 183, 230, .25);
+       border-top:10px solid rgba(0,174,239,.8);
+       border-radius:100%;
+    }
+    
+    @-webkit-keyframes rotation {
+       from {-webkit-transform: rotate(0deg);}
+       to {-webkit-transform: rotate(359deg);}
+    }
+    @-moz-keyframes rotation {
+       from {-moz-transform: rotate(0deg);}
+       to {-moz-transform: rotate(359deg);}
+    }
+    @-o-keyframes rotation {
+       from {-o-transform: rotate(0deg);}
+       to {-o-transform: rotate(359deg);}
+    }
+    @keyframes rotation {
+       from {transform: rotate(0deg);}
+       to {transform: rotate(359deg);}
+    }
+
     </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root">
-      <div class="divLoader">
+      <div class="divLoader ">
         <!-- <svg class="svgLoader" viewBox="0 0 1024 1024" width="10em" height="10em">
           <path fill="lightblue"
             d="logo192.png"
           />
         </svg> -->
-        
+        <span class="spinner"></span>
 
-        <img class="svgLoader" src="logo192.png" alt="..loading">
+        <!-- <img class="spinner" src="" alt=""> -->
       </div>
     </div>
     <!--
