@@ -12,8 +12,10 @@ from flask_cors import CORS
  
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///students.sqlite3'
-app.config['SECRET_KEY'] = "random string"
-CORS(app)
+app.config['SECRET_KEY'] = "super_duper_secretKEy%$!@JWT@()"
+
+CORS(app, resources={r"/*": {"origins": ["http://localhost:3000", "https://poc-todo.netlify.app"]}})
+
 db = SQLAlchemy(app)
  
 # model
@@ -37,13 +39,6 @@ class Todo(db.Model):
     def __repr__(self):
         return f'Todo: {self.title}'
 
-
-# @app.route('/todos')
-# def show_all():
-#     res=[]
-#     for student in Todo.query.all():
-#         res.append({"id":student.id,"title":student.title,"desc":student.desc,"date_added":str(student.date_added),"done":student.done})
-#     return  (json.dumps(res))
 
 @app.route('/todos/',methods=['POST','GET'])
 def all_todos():
