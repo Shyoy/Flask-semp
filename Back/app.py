@@ -1,11 +1,14 @@
 
 # import datetime
 from dataclasses import dataclass
+from datetime import datetime , timedelta
 import time
 import json
+import jwt
+from  werkzeug.security import generate_password_hash, check_password_hash
 # from datetime import datetime
 from flask.helpers import datetime
-from flask import Flask, request, flash, url_for, redirect, render_template, jsonify
+from flask import Flask, request, flash, url_for, redirect, render_template, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
@@ -17,6 +20,17 @@ app.config['SECRET_KEY'] = "super_duper_secretKEy%$!@JWT@()"
 CORS(app, resources={r"/*": {"origins": ["http://localhost:3000", "https://poc-todo.netlify.app"]}})
 
 db = SQLAlchemy(app)
+
+
+
+
+# Database ORMs
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    public_id = db.Column(db.String(50), unique = True)
+    name = db.Column(db.String(100))
+    email = db.Column(db.String(70), unique = True)
+    password = db.Column(db.String(80))
  
 # model
 @dataclass
@@ -69,6 +83,19 @@ def todo(id):
         db.session.delete(todo)
         db.session.commit()
         return f'DELETE id:{id} successfully'
+
+@app.route('/token')
+def get_token():
+    auth = request.authorization
+    print(auth)
+    if auth and auth.password == 'password':
+        token = jwt.encode({
+            'user':auth.username,
+            'exp':datetime.utcnow()+ timedelta(minutes=5),
+            }, app.config['SECRET_KEY'])
+        print(token)
+        return jsonify({'token':token})
+    return make_response('could not verify!', 401, {'WWW-Authnticate': 'Basic realm="Login Required"'})
 
 
 if __name__ == '__main__':
