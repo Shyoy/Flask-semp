@@ -1,5 +1,6 @@
 # flask imports
-from utils import is_json
+
+from utils import is_json ,email_check
 from flask import Flask, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
 import uuid # for public id
@@ -50,37 +51,38 @@ class Todo(db.Model):
 
 # decorator for verifying the JWT
 def token_required(f):
-	@wraps(f)
-	def decorated(*args, **kwargs):
-		token = None
-		# jwt is passed in the request header
-		if 'x-access-token' in request.headers:
-			token = request.headers['x-access-token']
-		# return 401 if token is not passed
-		if not token:
-			return jsonify({'message' : 'Token is missing !!'}), 401
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+        # jwt is passed in the request header
+        authorization= request.headers.get('Authorization')
+        token = authorization.split()[1] if authorization else None
+        # return 401 if token is not passed
+        if not token:
+            return jsonify({'message' : 'Token is missing !!'}), 401
 
-		try:
-			# decoding the payload to fetch the stored details
-			data = jwt.decode(token, app.config['SECRET_KEY'])
-			current_user = User.query\
+        try:
+            # decoding the payload to fetch the stored details
+            data = jwt.decode(token, app.config['SECRET_KEY'],algorithms=['HS256'])
+            current_user = User.query\
 				.filter_by(public_id = data['public_id'])\
 				.first()
-		except:
-			return jsonify({
+        except Exception as e:
+            print(e)
+            return jsonify({
 				'message' : 'Token is invalid !!'
 			}), 401
 		# returns the current logged in users contex to the routes
-		return f(current_user, *args, **kwargs)
+        return f(current_user, *args, **kwargs)
 
-	return decorated
+    return decorated
 
 # User Database Route
 # this route sends back list of users
 @app.route('/user', methods =['GET'])
 @token_required
 def get_all_users(current_user):
-    print(current_user)
+    print(current_user.id)
     # querying the database
     # for all the entries in it
     users = User.query.all()
@@ -103,7 +105,7 @@ def get_all_users(current_user):
 def login():
     # creates dictionary of json data
     data = request.json
-    auth = data[0] if (data and isinstance(data, list)) else None
+    auth = data[0] if (data and isinstance(data, list)) else data
 
     if not auth or not auth.get('email') or not auth.get('password'):
         # returns 401 if any email or / and password is missing
@@ -126,13 +128,15 @@ def login():
         )
 
     if check_password_hash(user.password, auth.get('password')):
+        print(user.todos)
         # generates the JWT Token
         token = jwt.encode({
             'public_id': user.public_id,
-            'exp' : datetime.utcnow() + timedelta(minutes = 30)
+            'name': user.name,
+            'exp' : datetime.utcnow() + timedelta(minutes = 60)
         }, app.config['SECRET_KEY'])
 
-        return make_response(jsonify({'token' : token.decode('UTF-8')}), 201)
+        return make_response(jsonify({'token' : token}), 201)
     # returns 403 if password is wrong
     return make_response(
         'Could not verify',
@@ -144,12 +148,20 @@ def login():
 @app.route('/signup', methods =['POST'])
 def signup():
     # creates a dictionary of the form data
-    data = request.form
+    # data = request.form
+
+    data_j = request.json
+    data = data_j[0] if (data_j and isinstance(data_j, list)) else data_j
 
     # gets name, email and password
-    name, email = data.get('name'), data.get('email')
-    password = data.get('password')
-
+    name, email, password = data.get('name'), data.get('email'), data.get('password')
+    if not all([name, email_check(email), password]):
+        
+        return make_response(
+            {"email": "Required field","name": "Required field","password": "Required field"},
+            401,
+            {'WWW-Authenticate' : 'Basic realm ="invalid required !!"'}
+        )
     # checking for existing user
     user = User.query\
         .filter_by(email = email)\
@@ -174,15 +186,45 @@ def signup():
 
 
 @app.route('/todos/',methods=['POST','GET'])
-def all_todos():
+@token_required
+def all_todos(current_user):
     if request.method == 'GET':
-        return  jsonify(Todo.query.all())
+        todos = Todo.query.filter_by(user_id = current_user.public_id).all()
+        output = []
+        for todo in todos:
+            # appending the user data json
+            # to the response list
+            output.append({
+                'id': todo.id,
+                'title' : todo.title,
+                'desc' : todo.desc,
+                'date_added' : todo.date_added,
+                'done' : todo.done,
+            })
+        return  jsonify(output)
     if request.method == 'POST':
-        todo = Todo(**request.json)
-        print(request.get_json())
-        db.session.add(todo)
-        db.session.commit()
-        return 'Todo added successfully'
+        data_j = request.json
+        data = data_j[0] if (data_j and isinstance(data_j, list)) else data_j
+
+        try:
+            todo = Todo(**data)
+            todo.user_id = current_user.public_id
+            db.session.add(todo)
+            db.session.commit()
+        except Exception as e:
+            print(e)
+            return {"title":'field is required',"desc":'field is required'}
+       
+        # appending the user data json
+        # to the response list
+        output = [{
+            'id': todo.id,
+            'title' : todo.title,
+            'desc' : todo.desc,
+            'date_added' : todo.date_added,
+            'done' : todo.done,
+            }]
+        return jsonify(output)
 
 @app.route('/todos/<id>',methods=['PUT','GET','DELETE'])
 def todo(id):
