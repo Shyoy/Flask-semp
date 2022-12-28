@@ -28,15 +28,17 @@ class DevelopmentConfig extends Config {
 //     public productImagesUrl = "http://localhost:3030/api/products/images/";
 // }
 
-// class ProductionConfig extends Config {
-//     public supportPage = "http://northwnd.com/support/";
+class ProductionConfig extends Config {
 
-//     public productsUrl = "http://localhost:3030/api/products/";
-//     public productImagesUrl = "http://localhost:3030/api/products/images/";
-// }
+    public todosUrl = "https://shay-poc-flask.onrender.com/todos/";
+   
+    public registerUrl = "https://shay-poc-flask.onrender.com/signup";
+    public loginUrl = "https://shay-poc-flask.onrender.com/login";
+}
 
 
-let config = new DevelopmentConfig();
+// let config = new DevelopmentConfig();
+let config = new ProductionConfig();
 
 // if (process.env.NODE_ENV === "development") {
 //     config = new DevelopmentConfig();

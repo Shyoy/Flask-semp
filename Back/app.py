@@ -17,7 +17,8 @@ app = Flask(__name__)
 # configuration
 # NEVER HARDCODE YOUR CONFIGURATION IN YOUR CODE
 # INSTEAD CREATE A .env FILE AND STORE IN IT
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+secret_key = os.environ.get('SECRET_KEY')
+app.config['SECRET_KEY'] = secret_key if secret_key else "SupersecretSafeKey"
 # database name
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Database.db'
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
