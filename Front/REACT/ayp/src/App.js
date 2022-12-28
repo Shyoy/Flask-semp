@@ -12,32 +12,37 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [tab, setTab] = useState(1);
   const [todoEdit, setTodoEdit] = useState(Object);
-
   const [updateButton, setUpdateButton] = useState(false)
-// values
+  // values
   const [title, setTitle] = useState('')
   const [desc, setDesc] = useState('')
-// Authentication
-  const [token, setToken] = useState(localStorage.getItem('token')||"")
-  let navigate = useNavigate();
+  // Authentication
+let navigate = useNavigate();
+  // const [token, setToken] = useState(localStorage.getItem('token')||"")
+  let token = localStorage.getItem('token')||""
+  
+  let decoded = jwt_decode(token)
+  
+  const [userName, setUserName]=useState(decoded.name)
   let auth = {headers:{ Authorization: `Bearer ${token}` }}
 
-
   const loadData = async() => {
+    checkToken()
     await axios.get(MY_SERVER, auth )
     .then((response)=>{
       setTodos(response.data)
-      console.log((response.data))
     })
   }
 
   const remove = async(id) => {
+    checkToken()
     const response = await axios.delete(MY_SERVER+id, auth)
     console.log(response.data)
     loadData()
   }
 
   const add = async() => {
+    checkToken()
     if (title){
       const response = await axios.post(MY_SERVER,{title:title.trim(), desc:desc.trim()}, auth)
       setTitle('')
@@ -50,6 +55,7 @@ function App() {
     }
   }
   const handleCheckbox = async(id)=>{
+    checkToken()
     const editTodo = todos.find(todo => todo.id === +id);
     let done = (false === editTodo.done)
     await axios.put(MY_SERVER + editTodo.id, {done}, auth)
@@ -71,6 +77,7 @@ function App() {
   }
 
   const editDone = async() => {
+    checkToken()
     if (title){
       const response = await axios.put(MY_SERVER+todoEdit.id, {title:title.trim(), desc:desc.trim()}, auth)
       setTitle('')
@@ -97,21 +104,20 @@ function App() {
     }
   }
 
-  
-
-  useEffect(() => {
-    let decoded = jwt_decode(token)
-    console.log(decoded) 
+  const checkToken= () => {
     if (!token||Date.now() >= decoded.exp * 1000){
       navigate('/login')
     }
-    else{
-      console.log(token)
-      setTimeout(() => {
-          loadData()
-          console.log("Delayed for 800ms second.");
-        }, "800")
-    }
+    console.log(decoded) 
+  }
+  
+
+  useEffect(() => {
+    setTimeout(() => {
+        loadData()
+        console.log("Delayed for 800ms second.");
+      }, "800")
+    
       
       
     },[]);
@@ -167,6 +173,7 @@ function App() {
                   <div className="tab-pane fade show active" id="ex1-tabs-1" role="tabpanel"
                     aria-labelledby="ex1-tab-1">
                     <div className='scroll'>
+                    {userName && <span className='userName'>{userName} List</span>}
                     {todos.length === 0 && <Loading/>}
                     <ul className="list-group mb-0 " id='list5'>
                       {todos.massage ? 

@@ -35,6 +35,17 @@ const Login = () => {
         }
     },[email,name]);
 
+    const errorHandler = (err)=>{
+        if (err?.response?.data){
+            setErrMsg(err.response.data)
+        }
+        else{
+            setErrMsg("Could not connect to the server")
+        }
+        setTimeout(()=>{
+            setErrMsg('')
+        },6000)
+    }
 
     const submitLogin = async (e) => {
         e.preventDefault();
@@ -48,9 +59,8 @@ const Login = () => {
             setErrMsg('')
             navigate('/todo')
         })
-        .catch(error =>{
-            setErrMsg(error.response.data);
-            console.log(error.response.data);
+        .catch(err =>{
+            errorHandler(err)
             })
     }
 
@@ -67,10 +77,9 @@ const Login = () => {
             navigate('/todo')
 
         })
-        .catch(error =>{
-                setErrMsg(error.response.data);
-                console.log(error.response.data);
-            })
+        .catch(err =>{
+            errorHandler(err)
+        }) 
         
     }
 
@@ -91,8 +100,8 @@ const Login = () => {
 									<div className="center-wrap">
 
                                         <form onSubmit={submitLogin}>
+                                        {errMsg && <span id="errMsg" className='px-3 py-2  start-50 translate-middle bg-danger '>{errMsg}</span>}
 										<div className="section text-center">
-                                        {errMsg && <span id="errMsg" className='px-3 position-absolute start-50 translate-middle bg-danger jus'>{errMsg}</span>}
 											<h4 className="mb-4 pb-3">Log In</h4>
 											<div className="form-group">
 												<input type="email" name="logemail" onChange={(e)=> setEmail(e.target.value)} value={email||""} className="form-control" placeholder="Your Email" id="logemail" autoComplete="off" required/>
@@ -110,7 +119,9 @@ const Login = () => {
 			      				</div>
 								<div className="card-back">
 									<div className="center-wrap">
+                                        {errMsg && <span id="errMsg" className='px-3 py-2 start-50 translate-middle bg-danger '>{errMsg}</span>}
                                         <form onSubmit={submitSignup}>
+
                                             <div className="section text-center">
                                                 <h4 className="mb-4 pb-3">Sign Up</h4>
                                                 <div className="form-group">

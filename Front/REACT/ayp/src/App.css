@@ -1,28 +1,59 @@
-.App #list5 > *{
+.App #list5 > li{
     background-color: #ebebeb65;
     max-height: 50px;
+    margin-top: 0;
+    padding-top: 0;
+    
     overflow-y: hidden;
 }
 .App #list5{
-    height: 250px;
+    background-color: #97a7d8af;
+    min-height: 250px;
+}
+.App{
+    
+    overflow-y: hidden;
+
 }
 
+.App .card-body{
+    border-radius: 5px;
+    outline: #ffeba7;
+    background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1462889/pat.svg');
+    background-color: #2a2b38;
+    
+}
 
+.App input::-moz-placeholder {
+    -webkit-transition: all 200ms linear;
+      transition: all 200ms linear;
+    outline: #ffeba7;
+    color:#ffeba7;
+    border: 0px;
+    background-color:#102770;
 
+    
+}
+.App .form-label{
+    color:#ffeba7;
+    padding-left: 1%;
+    margin-top: 1%;
+    margin-bottom: 0;
+}
 
-/* .gradient-custom {
-    background: radial-gradient(50% 123.47% at 50% 50%, #00ff94 0%, #720059 100%),
-      linear-gradient(121.28deg, #669600 0%, #ff0000 100%),
-      linear-gradient(360deg, #0029ff 0%, #8fff00 100%),
-      radial-gradient(100% 164.72% at 100% 100%, #6100ff 0%, #00ff57 100%),
-      radial-gradient(100% 148.07% at 0% 0%, #fff500 0%, #51d500 100%);
-    background-blend-mode: screen, color-dodge, overlay, difference, normal;
-    background-repeat: no-repeat;
-    background-size: cover;
-} */
+.App #ex1 >li{
+    border-start-end-radius: 10px;
+    border-top-left-radius: 10px;
+    background-color:#2d1977;
+}
+
+.App .nav-link{
+    outline: #ffeba7;
+    color: #ffeba7;
+}
 
 .App .scroll {
-    max-height: 400px;
+    max-height: 350px;
     overflow-y: auto;
     
 }
@@ -49,4 +80,21 @@
     background-color: #fff;
 
 
+}
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+.App .userName {
+    position: absolute;
+    margin:12px;
+    padding: 5px;
+    padding-left: 2%;
+    padding-right: 2%;
+    top: 0px;
+    right: 5%; 
+    background: #20c99698;
+    color:#d63384;
+    border-radius: 50px;
+    font-family: 'Pacifico', cursive;
+    font-size: larger;
+    text-transform: capitalize;
+    
 }

@@ -298,6 +298,10 @@
 }
 
 .Login #errMsg{
-    top:20%;
+    bottom:94%;
     border-radius: 10px;
+    position: absolute;
+    width: 80%;
+    z-index: 6;
+    
 }
