@@ -73,7 +73,7 @@ def token_required(f):
 				.filter_by(public_id = data['public_id'])\
 				.first()
         except Exception as e:
-            print(e)
+            # print(e)
             return jsonify({
 				'message' : 'Token is invalid !!'
 			}), 401
@@ -87,7 +87,7 @@ def token_required(f):
 @app.route('/user', methods =['GET'])
 @token_required
 def get_all_users(current_user):
-    print(current_user.id)
+    # print(current_user.id)
     # querying the database
     # for all the entries in it
     users = User.query.all()
@@ -133,7 +133,7 @@ def login():
         )
 
     if check_password_hash(user.password, auth.get('password')):
-        print(user.todos)
+        # print(user.todos)
         # generates the JWT Token
         token = jwt.encode({
             'public_id': user.public_id,
@@ -215,7 +215,7 @@ def all_todos(current_user):
                 'date_added' : todo.date_added,
                 'done' : todo.done,
             })
-        print(output)
+        # print(output)
         if not output:
             return make_response({"massage":'Add a new todo'}, 200)
         return  jsonify(output)
@@ -230,7 +230,7 @@ def all_todos(current_user):
             db.session.add(todo)
             db.session.commit()
         except Exception as e:
-            print(e)
+            # print(e)
             return {"title":'field is required',"desc":'field is required'}
        
         # appending the user data json

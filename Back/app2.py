@@ -60,7 +60,7 @@ def all_todos():
         return  jsonify(Todo.query.all())
     if request.method == 'POST':
         todo = Todo(**request.json)
-        print(request.get_json())
+        # print(request.get_json())
         db.session.add(todo)
         db.session.commit()
         return 'Todo added successfully'
@@ -87,13 +87,13 @@ def todo(id):
 @app.route('/token')
 def get_token():
     auth = request.authorization
-    print(auth)
+    # print(auth)
     if auth and auth.password == 'password':
         token = jwt.encode({
             'user':auth.username,
             'exp':datetime.utcnow()+ timedelta(minutes=5),
             }, app.config['SECRET_KEY'])
-        print(token)
+        # print(token)
         return jsonify({'token':token})
     return make_response('could not verify!', 401, {'WWW-Authnticate': 'Basic realm="Login Required"'})
 
