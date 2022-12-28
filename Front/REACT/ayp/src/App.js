@@ -19,11 +19,22 @@ function App() {
   // Authentication
 let navigate = useNavigate();
   // const [token, setToken] = useState(localStorage.getItem('token')||"")
-  let token = localStorage.getItem('my-user-token')||""
+  let token = localStorage.getItem('my-user-token')
+  // print(token)
+
   
-  let decoded = jwt_decode(token)
+  let decoded = (token)? jwt_decode(token):""
+  // console.log(decoded)
+  let user = decoded?.name
+  if (token){
+    if (Date.now() >= decoded?.exp * 1000){
+      navigate('/login')
+      
+    }
+  }
   
-  const [userName, setUserName]=useState(decoded.name)
+  const [userName, setUserName]=useState(user)
+  
   let auth = {headers:{ Authorization: `Bearer ${token}` }}
 
   const loadData = async() => {
@@ -37,7 +48,7 @@ let navigate = useNavigate();
   const remove = async(id) => {
     checkToken()
     const response = await axios.delete(MY_SERVER+id, auth)
-    console.log(response.data)
+    // console.log(response.data)
     loadData()
   }
 
@@ -105,21 +116,27 @@ let navigate = useNavigate();
   }
 
   const checkToken= () => {
-    if (!token||Date.now() >= decoded.exp * 1000){
+    if (!token){
       navigate('/login')
+      return false;
     }
-    console.log(decoded) 
+    else if (token & Date.now() >= decoded?.exp * 1000){
+      navigate('/login')
+      return false;
+
+    }
+    return true;
+
   }
   
 
   useEffect(() => {
-    setTimeout(() => {
+    if (checkToken()){
+      setTimeout(() => {
         loadData()
         console.log("Delayed for 800ms second.");
       }, "800")
-    
-      
-      
+    }
     },[]);
   
   return (

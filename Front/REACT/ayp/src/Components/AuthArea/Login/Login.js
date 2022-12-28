@@ -104,11 +104,11 @@ const Login = () => {
 										<div className="section text-center">
 											<h4 className="mb-4 pb-3">Log In</h4>
 											<div className="form-group">
-												<input type="email" name="logemail" onChange={(e)=> setEmail(e.target.value)} value={email||""} className="form-control" placeholder="Your Email" id="logemail" autoComplete="off" required/>
+												<input type="email" name="logemail" onChange={(e)=> setEmail(e.target.value)} value={email||""} className="form-control" placeholder="Your Email" id="logemail1" autoComplete="off" required/>
 												<i className="input-icon bi bi-at"></i>
 											</div>	
 											<div className="form-group mt-2">
-												<input type="password" name="logpass" onChange={(e)=> setPassword(e.target.value)} value={password||""} className="form-control" placeholder="Your Password" id="logpass" autoComplete="off" required/>
+												<input type="password" name="logpass" onChange={(e)=> setPassword(e.target.value)} value={password||""} className="form-control" placeholder="Your Password" id="logpass1" autoComplete="off" required/>
 												<i className="input-icon bi bi-key"></i>
 											</div>
 											<button className="btn mt-5">submit</button>
@@ -129,11 +129,11 @@ const Login = () => {
                                                     <i className="input-icon bi bi-person-vcard"></i>
                                                 </div>	
                                                 <div className="form-group mt-2">
-                                                    <input type="email" name="logemail" onChange={(e)=> setEmail(e.target.value)} value={email||""} className="form-control" placeholder="Your Email" id="logemail" autoComplete="off" required/>
+                                                    <input type="email" name="logemail" onChange={(e)=> setEmail(e.target.value)} value={email||""} className="form-control" placeholder="Your Email" id="logemail2" autoComplete="off" required/>
                                                     <i className="input-icon bi bi-at"></i>
                                                 </div>	
                                                 <div className="form-group mt-2">
-                                                    <input type="password" name="logpass" onChange={(e)=> setPassword(e.target.value)} value={password||""} className="form-control" placeholder="Your Password" id="logpass" autoComplete="off" required/>
+                                                    <input  type="password" name="logpass" onChange={(e)=> setPassword(e.target.value)} value={password||""} className="form-control" placeholder="Your Password" id="logpass2" autoComplete="off" required/>
                                                     <i className="input-icon bi bi-key"></i>
                                                 </div>
                                                 <button className="btn mt-5">submit</button>
