@@ -51,7 +51,7 @@ const Login = () => {
         e.preventDefault();
         await axios.post(config.loginUrl, {email, password})
         .then((response)=>{
-            console.log(response.data.token)
+            // console.log(response.data.token)
             localStorage.setItem('my-user-token',response.data.token)
             setEmail('')
             setPassword('')

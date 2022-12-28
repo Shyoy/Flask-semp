@@ -128,6 +128,12 @@ let navigate = useNavigate();
     return true;
 
   }
+  if (checkToken()){
+
+    return(
+      <></>
+    );
+  }
   
 
   useEffect(() => {
@@ -136,6 +142,7 @@ let navigate = useNavigate();
         loadData()
         console.log("Delayed for 800ms second.");
       }, "800")
+    
     }
     },[]);
   
