@@ -128,13 +128,6 @@ let navigate = useNavigate();
     return true;
 
   }
-  if (checkToken()){
-
-    return(
-      <></>
-    );
-  }
-  
 
   useEffect(() => {
     if (checkToken()){
@@ -148,6 +141,7 @@ let navigate = useNavigate();
   
   return (
     <section className='App'>
+      {checkToken ?
       <div className="container py-5 h-100 mt-5">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col col-xl-10 ">
@@ -294,6 +288,7 @@ let navigate = useNavigate();
           </div>
         </div>
       </div>
+       : <></>}
     </section>
   );
 }
