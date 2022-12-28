@@ -1,9 +1,9 @@
-#list5 > *{
+.App #list5 > *{
     background-color: #ebebeb65;
     max-height: 50px;
     overflow-y: hidden;
 }
-.App > *>*> #list5{
+.App #list5{
     height: 250px;
 }
 
@@ -21,13 +21,13 @@
     background-size: cover;
 } */
 
-.scroll {
+.App .scroll {
     max-height: 400px;
     overflow-y: auto;
     
 }
 
-.Update{
+.App .Update{
     position: fixed;
     top: 0 ;
     left: 0;
@@ -40,7 +40,7 @@
     align-items: center;
 }
 
-.Update-inner {
+.App .Update-inner {
     position: relative;
     padding: 32px;
     width:100%;

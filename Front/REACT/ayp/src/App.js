@@ -1,35 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'; 
-// import Update from './Components/Update.js';
+import { useNavigate } from 'react-router-dom';
 import './App.css'
 import Loading from './Components/SharedArea/Loading/Loading.js';
+import config from './utils/Config.ts';
+import jwt_decode  from 'jwt-decode'
+
 function App() {
-  const MY_SERVER = 'http://localhost:5000/todos/'
+  const MY_SERVER = config.todosUrl
   // const MY_SERVER = 'https://shay-poc-flask.onrender.com/todos/'
   const [todos, setTodos] = useState([]);
   const [tab, setTab] = useState(1);
   const [todoEdit, setTodoEdit] = useState(Object);
 
   const [updateButton, setUpdateButton] = useState(false)
-
+// values
   const [title, setTitle] = useState('')
   const [desc, setDesc] = useState('')
+// Authentication
+  const [token, setToken] = useState(localStorage.getItem('token')||"")
+  let navigate = useNavigate();
+  let auth = {headers:{ Authorization: `Bearer ${token}` }}
 
 
   const loadData = async() => {
-    const response = await axios.get(MY_SERVER)
-    setTodos(response.data)
+    await axios.get(MY_SERVER, auth )
+    .then((response)=>{
+      setTodos(response.data)
+      console.log((response.data))
+    })
   }
 
   const remove = async(id) => {
-    const response = await axios.delete(MY_SERVER+id)
+    const response = await axios.delete(MY_SERVER+id, auth)
     console.log(response.data)
     loadData()
   }
 
   const add = async() => {
     if (title){
-      const response = await axios.post(MY_SERVER,{title:title.trim(), desc:desc.trim()})
+      const response = await axios.post(MY_SERVER,{title:title.trim(), desc:desc.trim()}, auth)
       setTitle('')
       setDesc('')
       loadData()
@@ -42,7 +52,7 @@ function App() {
   const handleCheckbox = async(id)=>{
     const editTodo = todos.find(todo => todo.id === +id);
     let done = (false === editTodo.done)
-    await axios.put(MY_SERVER + editTodo.id, {done})
+    await axios.put(MY_SERVER + editTodo.id, {done}, auth)
     loadData()
   }
 
@@ -62,7 +72,7 @@ function App() {
 
   const editDone = async() => {
     if (title){
-      const response = await axios.put(MY_SERVER+todoEdit.id, {title:title.trim(), desc:desc.trim()})
+      const response = await axios.put(MY_SERVER+todoEdit.id, {title:title.trim(), desc:desc.trim()}, auth)
       setTitle('')
       setDesc('')
       loadData()
@@ -87,17 +97,27 @@ function App() {
     }
   }
 
+  
+
   useEffect(() => {
+    let decoded = jwt_decode(token)
+    console.log(decoded) 
+    if (!token||Date.now() >= decoded.exp * 1000){
+      navigate('/login')
+    }
+    else{
+      console.log(token)
       setTimeout(() => {
-        loadData()
-        console.log("Delayed for 800ms second.");
-      }, "800")
+          loadData()
+          console.log("Delayed for 800ms second.");
+        }, "800")
+    }
       
       
     },[]);
   
   return (
-    
+    <section className='App'>
       <div className="container py-5 h-100 mt-5">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col col-xl-10 ">
@@ -149,6 +169,9 @@ function App() {
                     <div className='scroll'>
                     {todos.length === 0 && <Loading/>}
                     <ul className="list-group mb-0 " id='list5'>
+                      {todos.massage ? 
+                      <li className='bg-primary position-absolute  px-4 fs-2 rounded-4 top-50 start-50 translate-middle '>
+                        {todos.massage}</li>:<>
                       {todos.filter(todo => tabManager(todo.done)).map((todo, i) =>
                         <li key={i} className="rounded-2 scroll list-group-item d-flex align-items-center border-0 mb-2 rounded">
                           <input className="form-check-input me-2" type="checkbox"  checked={todo.done} value={todo.id} onChange={(e)=> {handleCheckbox(e.target.value)}} aria-label="..." />
@@ -208,7 +231,7 @@ function App() {
                             <i className="text-danger bi bi-trash"/>
                             </button>
                             </div>
-                          </li>)}
+                          </li>)}</>}
                       
 
                       {/* <li className="list-group-item d-flex align-items-center border-0 mb-2 rounded">
@@ -240,7 +263,7 @@ function App() {
           </div>
         </div>
       </div>
-     
+    </section>
   );
 }
 

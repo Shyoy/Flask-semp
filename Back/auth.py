@@ -1,5 +1,6 @@
 # flask imports
 
+from flask_cors import CORS
 from utils import is_json ,email_check
 from flask import Flask, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
@@ -19,6 +20,8 @@ app.config['SECRET_KEY'] = 'your secret key'
 # database name
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Database.db'
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+
+CORS(app, resources={r"/*": {"origins": ["http://localhost:3000", "https://poc-todo.netlify.app"]}})
 
 # creates SQLALCHEMY object
 db = SQLAlchemy(app)
@@ -133,7 +136,7 @@ def login():
         token = jwt.encode({
             'public_id': user.public_id,
             'name': user.name,
-            'exp' : datetime.utcnow() + timedelta(minutes = 60)
+            'exp' : datetime.utcnow() + timedelta(minutes = 30)
         }, app.config['SECRET_KEY'])
 
         return make_response(jsonify({'token' : token}), 201)
@@ -178,10 +181,19 @@ def signup():
         db.session.add(user)
         db.session.commit()
 
-        return make_response('Successfully registered.', 201)
+    if check_password_hash(user.password, password):
+        # generates the JWT Token
+        token = jwt.encode({
+            'public_id': user.public_id,
+            'name': user.name,
+            'exp' : datetime.utcnow() + timedelta(minutes = 30)
+        }, app.config['SECRET_KEY'])
+
+        return make_response(jsonify({'token' : token,"message":"Successfully registered"}), 201)
+
     else:
         # returns 202 if user already exists
-        return make_response('User already exists. Please Log in.', 202)
+        return make_response('Something went wrong', 401)
 
 
 
@@ -201,7 +213,11 @@ def all_todos(current_user):
                 'date_added' : todo.date_added,
                 'done' : todo.done,
             })
+        print(output)
+        if not output:
+            return make_response({"massage":'Add a new todo'}, 200)
         return  jsonify(output)
+
     if request.method == 'POST':
         data_j = request.json
         data = data_j[0] if (data_j and isinstance(data_j, list)) else data_j
@@ -237,7 +253,14 @@ def todo(id):
             if hasattr(todo,key) and key not in ['id', 'date_added']:
                 setattr(todo, key, val)
         db.session.commit()
-        return jsonify([todo])
+        todo = [{
+            'id': todo.id,
+            'title' : todo.title,
+            'desc' : todo.desc,
+            'date_added' : todo.date_added,
+            'done' : todo.done,
+        }]
+        return jsonify(todo)
 
     if request.method == 'DELETE':
         todo = Todo.query.get_or_404(id)
