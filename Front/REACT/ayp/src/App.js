@@ -19,7 +19,7 @@ function App() {
   // Authentication
 let navigate = useNavigate();
   // const [token, setToken] = useState(localStorage.getItem('token')||"")
-  let token = localStorage.getItem('token')||""
+  let token = localStorage.getItem('my-user-token')||""
   
   let decoded = jwt_decode(token)
   

@@ -52,7 +52,7 @@ const Login = () => {
         await axios.post(config.loginUrl, {email, password})
         .then((response)=>{
             console.log(response.data.token)
-            localStorage.setItem('token',response.data.token)
+            localStorage.setItem('my-user-token',response.data.token)
             setEmail('')
             setPassword('')
             setName('')
@@ -69,7 +69,7 @@ const Login = () => {
         await axios.post(config.registerUrl, {name, email, password})
         .then((response)=>{
             console.log(response.data.token)
-            localStorage.setItem('token',response.data.token)
+            localStorage.setItem('my-user-token',response.data.token)
             setEmail('')
             setPassword('')
             setName('')
