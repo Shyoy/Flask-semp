@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import App from './App';
-import Login from './Components/AuthArea/Login/Login';
+import Login from './Components/AuthArea/Login/Login.js';
 import './Index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
