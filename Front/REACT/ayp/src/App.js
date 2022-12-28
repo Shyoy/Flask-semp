@@ -120,7 +120,7 @@ let navigate = useNavigate();
       navigate('/login')
       return false;
     }
-    else if (token & Date.now() >= decoded?.exp * 1000){
+    else if (Date.now() >= decoded?.exp * 1000){
       navigate('/login')
       return false;
 
