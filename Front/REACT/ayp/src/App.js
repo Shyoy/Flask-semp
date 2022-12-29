@@ -4,7 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import './App.css'
 import Loading from './Components/SharedArea/Loading/Loading.js';
 import config from './utils/Config.ts';
-import jwt_decode  from 'jwt-decode'
+import jwt_decode  from 'jwt-decode';
+import Spinner from 'react-bootstrap/Spinner';
+
 
 function App() {
   
@@ -14,6 +16,7 @@ function App() {
   const [tab, setTab] = useState(1);
   const [todoEdit, setTodoEdit] = useState(Object);
   const [updateButton, setUpdateButton] = useState(false)
+  const [loading, setLoading] = useState(false);
   // values
   const [title, setTitle] = useState('')
   const [desc, setDesc] = useState('')
@@ -47,31 +50,40 @@ let navigate = useNavigate();
   }
 
   const remove = async(id) => {
+    setLoading(true)
     checkToken()
     const response = await axios.delete(MY_SERVER+id, auth)
     // console.log(response.data)
     loadData()
+    setLoading(false)
   }
 
   const add = async() => {
+    setLoading(true)
     checkToken()
     if (title){
       const response = await axios.post(MY_SERVER,{title:title.trim(), desc:desc.trim()}, auth)
       setTitle('')
       setDesc('')
       loadData()
+      setLoading(false)
       return response.data
+      
     }
     else{
+      setLoading(false)
       console.log('You need a title')
     }
+
   }
   const handleCheckbox = async(id)=>{
+    setLoading(true)
     checkToken()
     const editTodo = todos.find(todo => todo.id === +id);
     let done = (false === editTodo.done)
     await axios.put(MY_SERVER + editTodo.id, {done}, auth)
     loadData()
+    setLoading(false)
   }
 
   const edit = (id) => {
@@ -89,6 +101,8 @@ let navigate = useNavigate();
   }
 
   const editDone = async() => {
+    setLoading(true)
+
     checkToken()
     if (title){
       const response = await axios.put(MY_SERVER+todoEdit.id, {title:title.trim(), desc:desc.trim()}, auth)
@@ -96,10 +110,13 @@ let navigate = useNavigate();
       setDesc('')
       loadData()
       setUpdateButton(false)
+      setLoading(false)
       return response.data
     }
     else{
       alert('You need a title')
+      setLoading(false)
+
       console.log('You need a title')
     }
     
@@ -193,11 +210,12 @@ let navigate = useNavigate();
                     aria-labelledby="ex1-tab-1">
                     <div className='scroll'>
                     {userName && <span className='userName'>{userName} List</span>}
+                    {loading && <Spinner className='Spinner' animation="grow" variant="info" size="sm" />}
                     {todos.length === 0 && <Loading/>}
                     <ul className="list-group mb-0 " id='list5'>
                       {todos.massage ? 
-                      <li className='bg-primary position-absolute  px-4 fs-2 rounded-4 top-50 start-50 translate-middle '>
-                        {todos.massage}</li>:<>
+                      <li id="emptyTodo" className='position-absolute mt-5 px-4 fs-2 rounded-4 top-50 start-50 translate-middle '>
+                        Add Todo</li>:<>
                       {todos.filter(todo => tabManager(todo.done)).map((todo, i) =>
                         <li key={i} className="rounded-2 scroll list-group-item d-flex align-items-center border-0 mb-2 rounded">
                           <input className="form-check-input me-2" type="checkbox"  checked={todo.done} value={todo.id} onChange={(e)=> {handleCheckbox(e.target.value)}} aria-label="..." />

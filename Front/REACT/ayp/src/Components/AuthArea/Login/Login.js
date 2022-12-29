@@ -64,9 +64,9 @@ const Login = () => {
         .then((response)=>{
             // console.log(response.data.token)
             localStorage.setItem('my-user-token',response.data.token)
-            navigate('/todo')
             localStorage.setItem('email',"")
             localStorage.setItem('name',"")
+            navigate('/todo')
             setEmail('')
             setPassword('')
             setName('')
@@ -80,14 +80,15 @@ const Login = () => {
     }
 
     const submitSignup = async (e) => {
+        setLoading(true)
         e.preventDefault();
         await axios.post(config.registerUrl, {name, email, password})
         .then((response)=>{
             // console.log(response.data.token)
             localStorage.setItem('my-user-token',response.data.token)
-            navigate('/todo')
             localStorage.setItem('email',"")
             localStorage.setItem('name',"")
+            navigate('/todo')
             setEmail('')
             setPassword('')
             setName('')
@@ -95,7 +96,8 @@ const Login = () => {
         })
         .catch(err =>{
             errorHandler(err)
-        }) 
+        })
+        setLoading(false) 
     }
   return (
     <section className='Login'>

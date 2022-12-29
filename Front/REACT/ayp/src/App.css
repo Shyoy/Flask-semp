@@ -1,5 +1,5 @@
 .App #list5 > li{
-    background-color: #ebebeb65;
+    background-color: #ebebeb31;
     max-height: 50px;
     margin-top: 0;
     padding-top: 0;
@@ -107,5 +107,18 @@
     font-size: larger;
     text-transform: capitalize;
     
+}
+
+.App #emptyTodo{
+    background-color: rgba(255, 255, 255, 0) !important;
+}
+
+.App .Spinner{
+    position: absolute;
+    margin: 1%;
+    padding: 1%;
+    right: 2%;
+    top: 32%;
+   
 }
 
