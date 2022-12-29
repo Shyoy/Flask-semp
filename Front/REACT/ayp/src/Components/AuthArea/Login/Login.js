@@ -1,21 +1,31 @@
 import {React, useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom';
-
+import jwt_decode  from 'jwt-decode'
 import "./Login.css"
 import axios from 'axios'; 
 import config from '../../../utils/Config.ts';
+import Spinner from 'react-bootstrap/Spinner';
+
 
 
 const Login = () => {
     const [email, setEmail] = useState(localStorage.getItem('email'))
     const [name, setName] = useState(localStorage.getItem('name'))
     const [password, setPassword] = useState("")
+    const [loading, setLoading] = useState(false)
     const [loginWindow, setLoginWindow] = useState(true) 
     const [errMsg, setErrMsg] = useState("") 
     let navigate = useNavigate();
-
+    
     useEffect(()=>{
         // console.log(localStorage.getItem('token')|| "No token")
+        let token = localStorage.getItem('my-user-token')
+        let decoded = (token)? jwt_decode(token):""
+        // console.log(token)
+        if ( token && Date.now() <= (decoded?.exp * 1000)) {
+            console.log('valid token')
+            navigate('/todo')    
+        }
         if (password){
             setTimeout(()=>{
                 setPassword("")
@@ -48,41 +58,45 @@ const Login = () => {
     }
 
     const submitLogin = async (e) => {
+        setLoading(true)
         e.preventDefault();
         await axios.post(config.loginUrl, {email, password})
         .then((response)=>{
             // console.log(response.data.token)
             localStorage.setItem('my-user-token',response.data.token)
+            navigate('/todo')
+            localStorage.setItem('email',"")
+            localStorage.setItem('name',"")
             setEmail('')
             setPassword('')
             setName('')
             setErrMsg('')
-            navigate('/todo')
         })
         .catch(err =>{
             errorHandler(err)
             })
+
+        setLoading(false)
     }
 
     const submitSignup = async (e) => {
         e.preventDefault();
         await axios.post(config.registerUrl, {name, email, password})
         .then((response)=>{
-            console.log(response.data.token)
+            // console.log(response.data.token)
             localStorage.setItem('my-user-token',response.data.token)
+            navigate('/todo')
+            localStorage.setItem('email',"")
+            localStorage.setItem('name',"")
             setEmail('')
             setPassword('')
             setName('')
             setErrMsg('')
-            navigate('/todo')
-
         })
         .catch(err =>{
             errorHandler(err)
         }) 
-        
     }
-
   return (
     <section className='Login'>
 	<div className="section">
@@ -97,8 +111,8 @@ const Login = () => {
 						<div className="card-3d-wrap mx-auto">
 							<div className="card-3d-wrapper">
 								<div className="card-front">
+                                    {loading && <Spinner className='Spinner' animation="grow" variant="info" size="sm" />}
 									<div className="center-wrap">
-
                                         <form onSubmit={submitLogin}>
                                         {errMsg && <span id="errMsg" className='px-3 py-2  start-50 translate-middle bg-danger '>{errMsg}</span>}
 										<div className="section text-center">
@@ -118,6 +132,7 @@ const Login = () => {
 			      					</div>
 			      				</div>
 								<div className="card-back">
+                                    {loading && <Spinner className='Spinner' animation="grow" variant="info" size="sm" />}
 									<div className="center-wrap">
                                         {errMsg && <span id="errMsg" className='px-3 py-2 start-50 translate-middle bg-danger '>{errMsg}</span>}
                                         <form onSubmit={submitSignup}>

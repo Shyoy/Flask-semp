@@ -11,7 +11,7 @@ root.render(
 
   <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to={"/todo"}/>}/>
+        <Route path="/" element={<Navigate to={"/login"}/>}/>
         <Route path="/todo" element={<App />}>
         </Route>
         <Route path="/login" exact element={<Login/>}/>

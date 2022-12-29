@@ -7,6 +7,7 @@ import config from './utils/Config.ts';
 import jwt_decode  from 'jwt-decode'
 
 function App() {
+  
   const MY_SERVER = config.todosUrl
   // const MY_SERVER = 'https://shay-poc-flask.onrender.com/todos/'
   const [todos, setTodos] = useState([]);
@@ -295,3 +296,4 @@ let navigate = useNavigate();
 
 
 export default App;
+

@@ -100,7 +100,7 @@
   transform-style: preserve-3d;
   transition: all 600ms ease-out; 
 }
-.Login .card-front, .card-back {
+.Login .card-front,.Login .card-back {
   width: 100%;
   height: 100%;
   background-color: #2a2b38;
@@ -304,4 +304,20 @@
     width: 80%;
     z-index: 6;
     
+}
+
+.Login .Spinner{
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  margin: 1%;
+  right: 15px;
+  top: 15px;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -o-backface-visibility: hidden;
+  backface-visibility: hidden;
+
 }
