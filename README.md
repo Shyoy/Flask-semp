@@ -1,53 +1,52 @@
 # Getting Started
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<br>
 
-## Available Scripts
 
 ## Initial Setup
-
-
-1. **Create virtualenv in main project folder**:
+### Backend:
+1. **Create virtualenv**:
+    ```cmd
+    cd .\Back
+    ```
     ```cmd
     python -m venv venv
     ```
-
-2. **Install all needed requirements**:
+2. Install all needed requirements
     ```cmd
     pip install -r requirements.txt
     ```
 3. **Run the server**:
     ```cmd
-    python manage.py runserver
+    python app.py
     ```
+### Frontend:
+1. **Open new terminal**:
+    ```cmd
+    cd .\Front\REACT\ayp
+    ```
+2. Install all needed requirements
+    ```cmd
+    npm i
+    ```
+    
+2. **Run the server**:
+    ```cmd
+    npm start
+    ```
+
    
 <br>
+
 ## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### React:
+You can learn more in the [Create React App documentation](https://create-react-app.dev/docs/getting-started/).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+### Flask:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+To learn Flask, check out the [Flask documentation](https://flask.palletsprojects.com/en/2.2.x/quickstart/).
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+To learn Flask-SQLAlchemy, check out the [Flask-SQLAlchemy documentation](https://flask-sqlalchemy.palletsprojects.com/en/3.0.x/quickstart/).
