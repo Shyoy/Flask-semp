@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import jwt_decode  from 'jwt-decode'
 import "./Login.css"
 import axios from 'axios'; 
-import config from '../../../utils/Config.ts';
+import config from '../../../utils/Config.js';
 import Spinner from 'react-bootstrap/Spinner';
 
 
 
 const Login = () => {
+    const MY_SERVER = config.todosUrl
     const [email, setEmail] = useState(localStorage.getItem('email'))
     const [name, setName] = useState(localStorage.getItem('name'))
     const [password, setPassword] = useState("")

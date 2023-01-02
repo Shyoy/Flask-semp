@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './App.css'
 import Loading from './Components/SharedArea/Loading/Loading.js';
-import config from './utils/Config.ts';
+import config from './utils/Config.js';
 import jwt_decode  from 'jwt-decode';
 import Spinner from 'react-bootstrap/Spinner';
 
